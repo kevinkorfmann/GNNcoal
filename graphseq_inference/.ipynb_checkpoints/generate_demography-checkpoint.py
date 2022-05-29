@@ -1,13 +1,3 @@
-import numpy as np
-import random
-import torch
-
-seed = 1234567890
-
-random.seed(seed)
-torch.manual_seed(seed)
-np.random.seed(seed)
-
 import sys
 from sklearn.linear_model import LinearRegression
 
