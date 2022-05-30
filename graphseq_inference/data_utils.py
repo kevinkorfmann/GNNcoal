@@ -764,17 +764,26 @@ def discretize_trees_mmc_version(ts, min_num_nodes = 17, num_trees = 500):
     trees = np.array(trees)[mask]
     trees = np.random.choice(trees, size=num_trees)
     return trees.tolist()
-            
+
+
+def get_new_poptime():
+    steps = 18
+    x = np.log(get_population_time(time_rate=0.1, num_time_windows=steps, tmax=10_000_000).tolist())
+    xnew = np.linspace(x[0], x[-1], num=10000, endpoint=True)
+    x_sample = xnew[np.linspace(10, 9999, 60).astype(int)]
+    population_time = np.exp(x_sample)
+    return population_time
+
 def get_binned_coalescent_times(ts, binned_population_time, num_time_windows:int,  num_trees: int = 500) -> list:
     """ Number of coalescent events for each time window for discretized trees.
     """
         
-    binned_population_time = np.array(binned_population_time)
-    #sorted_log_trees_node_times = get_sorted_log_trees_node_times(ts, discretize_trees(ts.aslist(), num_trees))
-    sorted_log_trees_node_times = get_sorted_log_trees_node_times(ts, ts.aslist()[:num_trees])
-    
-    #sorted_log_trees_node_times = get_sorted_log_trees_node_times(ts, discretize_trees_mmc_version(ts, 17, num_trees))
+    new_pop_time = get_new_poptime()
+    #print(new_pop_time[-1], new_pop_time[0])
 
+
+    binned_population_time = np.array(binned_population_time)
+    sorted_log_trees_node_times = get_sorted_log_trees_node_times(ts, ts.aslist()[:num_trees])
     tree_times = np.exp(np.array(sorted_log_trees_node_times))
         
     tree_bins = [] 
@@ -783,16 +792,15 @@ def get_binned_coalescent_times(ts, binned_population_time, num_time_windows:int
     for current_tree_times in tree_times:
                 
         for i, time in enumerate(current_tree_times):
-            if time >= 10_000_000:
+            if time >= new_pop_time[-1]:
                 outside_window += 1
                 time_window = binned_population_time.shape[0]
                 tree_bins.append(time_window)
-            elif time < 1:
+            elif time < new_pop_time[0]:
                 outside_window += 1
                 tree_bins.append(0)
+
             else:
-                #print(time)
-                #print(binned_population_time)
                 time_window = np.argwhere(np.sum(binned_population_time < time, axis=1) == 1).item()
                 tree_bins.append(time_window)
             

@@ -11,12 +11,14 @@ np.random.seed(seed)
 import sys
 from sklearn.linear_model import LinearRegression
 
-sys.path.append("/home/ubuntu/graphseq-inference/")
-sys.path.append("/home/ubuntu/graphseq-inference/graphseq_inference/")
+computer="anon/projects2"
+
+sys.path.append("/home/" + str(computer) + "/graphseq-inference/")
+#sys.path.append("/home/" + str(computer) + "/graphseq-inference/graphseq_inference/")
 
 print(sys.path)
 
-data_dir = "/home/ubuntu/graphseq-inference-analysis/"
+data_dir = "/home/" + str(computer) + "/graphseq-inference-analysis/"
 
 
 from graphseq_inference.data_utils import *
@@ -129,9 +131,9 @@ for increment in range(0, num_scenario):
 
     parameters.to_csv(data_dir + "dataset/parameters_" + str(increment) + ".csv")
 
-    try:
-        col_events , mask = compute_mask_from_tree_sequences(tree_sequences, population_time, num_cpus=7, min_coal_tree=30)
-        convert_tree_sequences_to_data_objects_with_masks(tree_sequences,
+#    try:
+    col_events , mask = compute_mask_from_tree_sequences(tree_sequences, population_time, num_cpus=7, min_coal_tree=30)
+    convert_tree_sequences_to_data_objects_with_masks(tree_sequences,
                                                           parameters,
                                                           mask,
                                                           population_time, 
@@ -140,4 +142,4 @@ for increment in range(0, num_scenario):
                                                           directory= data_dir + "dataset/mmc_dataset_" + str(increment) + "/",
                                                           num_cpus=20)
 
-    except Exception as e: print(e)
+    #except Exception as e: print(e)
