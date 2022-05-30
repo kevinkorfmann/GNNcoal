@@ -11,7 +11,8 @@ np.random.seed(seed)
 import sys
 from sklearn.linear_model import LinearRegression
 
-computer="anon/projects2"
+#computer="anon/projects2"
+computer = "ubuntu"
 
 sys.path.append("/home/" + str(computer) + "/graphseq-inference/")
 #sys.path.append("/home/" + str(computer) + "/graphseq-inference/graphseq_inference/")
@@ -33,7 +34,7 @@ from scipy.interpolate import interp1d
 
 num_replicates = 100
 upper_tree_limit = 500
-num_scenario = 2500
+num_scenario = 2200
 
 
 def get_sequence_length(alpha):
