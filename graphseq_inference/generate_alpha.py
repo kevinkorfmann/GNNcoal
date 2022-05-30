@@ -34,7 +34,7 @@ from scipy.interpolate import interp1d
 
 num_replicates = 100
 upper_tree_limit = 500
-num_scenario = 2200
+num_scenario = 1000
 
 
 def get_sequence_length(alpha):
