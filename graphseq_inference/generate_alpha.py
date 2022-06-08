@@ -11,8 +11,10 @@ np.random.seed(seed)
 import sys
 from sklearn.linear_model import LinearRegression
 
+
 #computer="anon/projects2"
 computer = "ubuntu"
+
 
 sys.path.append("/home/" + str(computer) + "/graphseq-inference/")
 #sys.path.append("/home/" + str(computer) + "/graphseq-inference/graphseq_inference/")
