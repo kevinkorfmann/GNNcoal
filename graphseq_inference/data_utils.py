@@ -47,20 +47,13 @@ def sample_population_size(n_min:int=10, n_max:int=100_000, num_time_windows=21)
             
     return population_size
 
+def sample_constant_population_size(n_min:int=10, n_max:int=100_000, num_time_windows=21) -> list[float]:
+    return np.random.uniform(n_min, n_max, 1).tolist() * num_time_windows
 
-
+"""
 def sample_population_size_with_varying_lower_bound(lower_bound: int, n_min:int=10, n_max:int=100_000, num_time_windows=21) -> list[float]:
     
-    """Creates random demography. Function modified after: 
-    https://gitlab.inria.fr/ml_genetics/public/dlpopsize_paper
-    Decreasing number of bottlenecks in the dataset by increaseing the lower-bound.
-    
-    :param int lower_bound: Modified lower-bound of demography.
-    :param int n_min: Lower-bound of demography.
-    :param int n_max: Upper-bound of demography.
-    :param int num_time_windows: Number of population sizes in demography.
-    :return list: 
-    """
+
     
     n_min_log10 = np.log10(n_min)
     n_max_log10 = np.log10(n_max)
@@ -71,6 +64,7 @@ def sample_population_size_with_varying_lower_bound(lower_bound: int, n_min:int=
             population_size[-1] = population_size[-2] * 10 ** np.random.uniform(-1, 1)
             
     return population_size
+"""
 
 
 def get_population_time(time_rate:float=0.06, tmax:int = 130_000,

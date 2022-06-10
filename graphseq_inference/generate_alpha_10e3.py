@@ -63,7 +63,10 @@ for increment in range(0, num_scenario):
     while upper_out_of_bound or lower_out_of_bound:
         steps = 18
         x = np.log(get_population_time(time_rate=0.1, num_time_windows=steps, tmax=10_000_000).tolist())
-        y = np.log(sample_population_size(10_000, 10_000_000, steps))
+        
+        #y = np.log(sample_population_size(10_000, 10_000_000, steps))
+        y = np.log(sample_constant_population_size(10_000, 10_000_000, steps))
+        
         xnew = np.linspace(x[0], x[-1], num=10000, endpoint=True)
         f_cubic = interp1d(x, y, kind='cubic')
         ynew = f_cubic(xnew)
@@ -89,7 +92,7 @@ for increment in range(0, num_scenario):
                                    num_time_windows=60,
                                    n_min = 1_000,
                                    n_max = 1_000_000,
-                                   recombination_rates=[1e-8, 1e-8],
+                                   recombination_rates=[1e-7, 1e-7],
                                    population_size=population_size,
                                    model="beta",
                                    alpha=random_alpha,
