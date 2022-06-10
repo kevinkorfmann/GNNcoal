@@ -44,7 +44,7 @@ def get_sequence_length(alpha):
     y = np.array([903272667.6483952, 449680355.2510645,178743721.59285852, 70857015.72050871,26609043.76117958,
                   10475248.838195799,4518011.131732858, 2024414.914914666, 1265514.8452846785])
     #y = y * 1.1
-    y = y / 50
+    y = y / 20
     y = np.log(y)
     reg = LinearRegression().fit(X, y)
 
@@ -66,7 +66,7 @@ for increment in range(0, num_scenario):
         x = np.log(get_population_time(time_rate=0.1, num_time_windows=steps, tmax=10_000_000).tolist())
         
         #y = np.log(sample_population_size(10_000, 10_000_000, steps))
-        y = np.log(sample_constant_population_size(10_000, 10_000_000, steps))
+        y = np.log(sample_constant_population_size(1_000, 1_000_000, steps))
         
         xnew = np.linspace(x[0], x[-1], num=10000, endpoint=True)
         f_cubic = interp1d(x, y, kind='cubic')
