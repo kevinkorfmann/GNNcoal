@@ -44,7 +44,7 @@ def get_sequence_length(alpha):
     y = np.array([903272667.6483952, 449680355.2510645,178743721.59285852, 70857015.72050871,26609043.76117958,
                   10475248.838195799,4518011.131732858, 2024414.914914666, 1265514.8452846785])
     #y = y * 1.1
-    y = y / 20
+    y = y / 10
     y = np.log(y)
     reg = LinearRegression().fit(X, y)
 
@@ -106,8 +106,10 @@ for increment in range(0, num_scenario):
     
     num_trees = []
     for ts in tree_sequences:
-        #if ts.num_trees >= 500:
-        num_trees.append(ts.num_trees)
+        if ts.num_trees >= 500:
+            num_trees.append(500)
+        else:
+            num_trees.append(1)
 
     print(random_alpha, int(np.mean(num_trees))) 
     print(np.sum(num_trees)/50000)
@@ -128,8 +130,10 @@ for increment in range(0, num_scenario):
 
         num_trees = []
         for ts in tree_sequences:
-            #if ts.num_trees >= 500:
-            num_trees.append(ts.num_trees)
+            if ts.num_trees >= 500:
+                num_trees.append(500)
+            else:
+                num_trees.append(1)
 
 
 

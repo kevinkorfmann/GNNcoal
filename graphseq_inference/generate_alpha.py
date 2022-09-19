@@ -102,8 +102,10 @@ for increment in range(0, num_scenario):
     
     num_trees = []
     for ts in tree_sequences:
-        #if ts.num_trees >= 500:
-        num_trees.append(ts.num_trees)
+        if ts.num_trees >= 500:
+            num_trees.append(500)
+        else:
+            num_trees.append(1)
 
     print(random_alpha, int(np.mean(num_trees))) 
     print(np.sum(num_trees)/50000)
@@ -124,15 +126,16 @@ for increment in range(0, num_scenario):
 
         num_trees = []
         for ts in tree_sequences:
-            #if ts.num_trees >= 500:
-            num_trees.append(ts.num_trees)
+            if ts.num_trees >= 500:
+                num_trees.append(500)
+            else: num_trees.append(1)
 
 
 
 
 
 
-    parameters.to_csv(data_dir + "alpha-dataset/parameters_" + str(increment) + ".csv")
+    parameters.to_csv(data_dir + "alpha-dataset2/parameters_" + str(increment) + ".csv")
 
 #    try:
     col_events , mask = compute_mask_from_tree_sequences(tree_sequences, population_time, num_cpus=7, min_coal_tree=30)
@@ -142,7 +145,7 @@ for increment in range(0, num_scenario):
                                                           population_time, 
                                                           num_embedding=60,
                                                           num_trees=upper_tree_limit,
-                                                          directory= data_dir + "alpha-dataset/mmc_dataset_" + str(increment) + "/",
+                                                          directory= data_dir + "alpha-dataset2/mmc_dataset_" + str(increment) + "/",
                                                           num_cpus=20)
 
     #except Exception as e: print(e)

@@ -30,19 +30,20 @@ from torch_geometric.utils.to_dense_batch import to_dense_batch
 torch.Tensor(0)
 
 class GNN(nn.Module):
-    def __init__(self, in_channels, hidden_channels, out_channels, normalize=True, lin=True):
+    def __init__(self, in_channels, hidden_channels, out_channels, normalize=True, lin=True, track_running_stats=True):
         super().__init__()
         
         self.conv1 = DenseGCNConv(in_channels, hidden_channels, normalize)
-        self.bn1 = nn.BatchNorm1d(hidden_channels)
+        self.bn1 = nn.BatchNorm1d(hidden_channels, track_running_stats=track_running_stats)
         
         self.conv2 = DenseGCNConv(hidden_channels, hidden_channels, normalize)
-        self.bn2 = nn.BatchNorm1d(hidden_channels)
+        self.bn2 = nn.BatchNorm1d(hidden_channels, track_running_stats=track_running_stats)
+        
         #self.conv3 = DenseGCNConv(hidden_channels, hidden_channels, normalize)
-        #self.bn3 = nn.BatchNorm1d(hidden_channels)
+        #self.bn3 = nn.BatchNorm1d(hidden_channels, track_running_stats=track_running_stats)
         
         self.conv4 = DenseGCNConv(hidden_channels, out_channels, normalize)
-        self.bn4 = nn.BatchNorm1d(out_channels)
+        self.bn4 = nn.BatchNorm1d(out_channels, track_running_stats=track_running_stats)
         
         if lin is True:
             self.lin = nn.Linear(2*hidden_channels + out_channels, out_channels)
@@ -76,23 +77,23 @@ class GNN(nn.Module):
 
             
 class DiffPoolNet(torch.nn.Module):
-    def __init__(self, max_nodes, num_features, num_hidden=64, out_channels=60):
+    def __init__(self, max_nodes, num_features, num_hidden=64, out_channels=60, track_running_stats=True):
         super().__init__()
 
         num_nodes = ceil(0.3 * max_nodes)
-        self.gnn1_pool = GNN(num_features, num_hidden, num_nodes)
-        self.gnn1_embed = GNN(num_features, num_hidden, num_hidden, lin=False)
+        self.gnn1_pool = GNN(num_features, num_hidden, num_nodes, track_running_stats=track_running_stats)
+        self.gnn1_embed = GNN(num_features, num_hidden, num_hidden, lin=False, track_running_stats=track_running_stats)
 
         num_nodes = ceil(0.3 * num_nodes)
-        self.gnn2_pool = GNN(3 * num_hidden, num_hidden, num_nodes)
-        self.gnn2_embed = GNN(3 * num_hidden, num_hidden, num_hidden, lin=False)
+        self.gnn2_pool = GNN(3 * num_hidden, num_hidden, num_nodes, track_running_stats=track_running_stats)
+        self.gnn2_embed = GNN(3 * num_hidden, num_hidden, num_hidden, lin=False, track_running_stats=track_running_stats)
         
         num_nodes = ceil(0.3 * num_nodes)
-        self.gnn3_pool = GNN(3 * num_hidden, num_hidden, num_nodes)
-        self.gnn3_embed = GNN(3 * num_hidden, num_hidden, num_hidden, lin=False)
+        self.gnn3_pool = GNN(3 * num_hidden, num_hidden, num_nodes, track_running_stats=track_running_stats)
+        self.gnn3_embed = GNN(3 * num_hidden, num_hidden, num_hidden, lin=False, track_running_stats=track_running_stats)
         
 
-        self.gnn4_embed = GNN(3 * num_hidden, num_hidden, num_hidden, lin=False)
+        self.gnn4_embed = GNN(3 * num_hidden, num_hidden, num_hidden, lin=False, track_running_stats=track_running_stats)
 
         self.lin1 = nn.Linear(3 * num_hidden, num_hidden)        
         self.lin2 = nn.Linear(num_hidden, out_channels)
